@@ -1,3 +1,4 @@
+// Version 2 - Single Thread Brute Force Completed
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
