@@ -91,6 +91,7 @@
             progressBar1.Name = "progressBar1";
             progressBar1.Size = new Size(100, 23);
             progressBar1.TabIndex = 5;
+            progressBar1.Click += progressBar1_Click;
             // 
             // lblTime
             // 
@@ -110,14 +111,16 @@
             lblResult.Size = new Size(117, 15);
             lblResult.TabIndex = 7;
             lblResult.Text = "Password Not Found";
+            lblResult.Click += lblResult_Click_1;
             // 
             // txtPerformance
             // 
-            txtPerformance.Location = new Point(325, 246);
+            txtPerformance.Location = new Point(277, 246);
             txtPerformance.Name = "txtPerformance";
-            txtPerformance.Size = new Size(100, 96);
+            txtPerformance.Size = new Size(200, 120);
             txtPerformance.TabIndex = 8;
             txtPerformance.Text = "";
+            txtPerformance.TextChanged += txtPerformance_TextChanged;
             // 
             // Form1
             // 

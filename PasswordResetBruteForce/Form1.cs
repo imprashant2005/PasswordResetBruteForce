@@ -1,4 +1,5 @@
-// Version 2 - Single Thread Brute Force Completed
+// Version 2 - Single Thread and Multi Thread Brute Force
+
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -27,6 +28,8 @@ namespace PasswordResetBruteForce
 
             currentHash = hasher.HashPassword(currentPassword);
 
+            progressBar1.Value = 0;
+
             txtPerformance.Text =
                 "Generated Password: " + currentPassword +
                 Environment.NewLine +
@@ -36,34 +39,66 @@ namespace PasswordResetBruteForce
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            Stopwatch stopwatch = new Stopwatch();
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = 100;
+            progressBar1.Value = 0;
 
-            stopwatch.Start();
+            // Single Thread Test
+            Stopwatch singleWatch = new Stopwatch();
 
-            SingleThreadBruteForce bruteForce =
+            singleWatch.Start();
+
+            SingleThreadBruteForce single =
                 new SingleThreadBruteForce();
 
-            string foundPassword =
-                bruteForce.FindPassword(currentHash);
+            string singleResult =
+                single.FindPassword(currentHash);
 
-            stopwatch.Stop();
+            singleWatch.Stop();
+
+            progressBar1.Value = 50;
+
+            // Multi Thread Test
+            Stopwatch multiWatch = new Stopwatch();
+
+            multiWatch.Start();
+
+            MultiThreadBruteForce multi =
+                new MultiThreadBruteForce();
+
+            string multiResult =
+                multi.FindPassword(currentHash);
+
+            multiWatch.Stop();
+
+            progressBar1.Value = 100;
 
             lblResult.Text =
-                "Found Password: " + foundPassword;
+                "Found Password: " + multiResult;
 
             lblTime.Text =
                 "Elapsed Time: " +
-                stopwatch.ElapsedMilliseconds +
+                multiWatch.ElapsedMilliseconds +
                 " ms";
+
+            double speedup =
+                (double)singleWatch.ElapsedMilliseconds /
+                Math.Max(1, multiWatch.ElapsedMilliseconds);
 
             txtPerformance.Text =
                 "Original Password: " + currentPassword +
                 Environment.NewLine +
-                "Found Password: " + foundPassword +
                 Environment.NewLine +
-                "Time: " +
-                stopwatch.ElapsedMilliseconds +
-                " ms";
+                "Single Thread Time: " +
+                singleWatch.ElapsedMilliseconds + " ms" +
+                Environment.NewLine +
+                Environment.NewLine +
+                "Multi Thread Time: " +
+                multiWatch.ElapsedMilliseconds + " ms" +
+                Environment.NewLine +
+                Environment.NewLine +
+                "Speedup: " +
+                speedup.ToString("0.00") + "x";
         }
 
         private void btnStart_Click_1(object sender, EventArgs e)
@@ -73,7 +108,12 @@ namespace PasswordResetBruteForce
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            progressBar1.Value = 0;
 
+            lblResult.Text = "Password Not Found";
+            lblTime.Text = "Elapsed Time: 0";
+
+            txtPerformance.Clear();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -87,6 +127,21 @@ namespace PasswordResetBruteForce
         }
 
         private void lblResult_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblResult_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPerformance_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void progressBar1_Click(object sender, EventArgs e)
         {
 
         }
